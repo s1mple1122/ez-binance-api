@@ -1,0 +1,4 @@
+[private]
+apiKey="apiKey"
+secretKey="secretKey"
+baseURL="https://api4.binance.com"
