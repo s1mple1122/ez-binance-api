@@ -1,4 +1,4 @@
-module withdraw
+module binance-cli
 
 go 1.21.6
 
