@@ -62,22 +62,23 @@ func query(ctx context.Context, cmd *cli.Command) error {
 	client := bc.NewClient(cfg.Private.ApiKey, cfg.Private.SecretKey, cfg.Private.BaseURL)
 	// FundingWalletService - /sapi/v1/asset/get-funding-asset
 	fundingWallet, err := client.NewFundingWalletService().Asset(symbol).
-		Do(context.Background())
+		Do(ctx)
 	if err != nil {
 		return err
 	}
 	fmt.Println("balance:")
 	fmt.Println(bc.PrettyPrint(fundingWallet))
-	allCoinsInfo, err := client.NewGetAllCoinsInfoService().Do(context.Background())
+	allCoinsInfo, err := client.NewGetAllCoinsInfoService().Do(ctx)
 	if err != nil {
 		return err
 	}
 	var network = make(map[string]string)
+a:
 	for _, v := range allCoinsInfo {
 		if strings.EqualFold(v.Coin, symbol) {
 			for _, net := range v.NetworkList {
 				network[net.Network] = net.Name
-
+				break a
 			}
 		}
 	}
@@ -105,7 +106,7 @@ func withdraw(ctx context.Context, cmd *cli.Command) error {
 	client := bc.NewClient(cfg.Private.ApiKey, cfg.Private.SecretKey, cfg.Private.BaseURL)
 	for i, v := range list {
 		withdraw, err := client.NewWithdrawService().Coin(strings.ToUpper(symbol)).Address(v.Address).
-			Amount(v.Amount).Network(network).Do(context.Background())
+			Amount(v.Amount).Network(network).Do(ctx)
 		if err != nil {
 			return err
 		}
