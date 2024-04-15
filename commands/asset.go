@@ -100,7 +100,7 @@ func withdraw(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 	if len(list) == 0 {
-		return errors.New("无转账明细")
+		return errors.New("no transfer details")
 	}
 	fmt.Println("send message:")
 	client := bc.NewClient(cfg.Private.ApiKey, cfg.Private.SecretKey, cfg.Private.BaseURL)
@@ -112,6 +112,7 @@ func withdraw(ctx context.Context, cmd *cli.Command) error {
 		}
 		fmt.Println(bc.PrettyPrint(withdraw))
 		if i < len(list)-1 {
+			fmt.Println("wait next transfer")
 			time.Sleep(10 * time.Second)
 		} else {
 			return nil
